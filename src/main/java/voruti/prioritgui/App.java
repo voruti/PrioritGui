@@ -16,13 +16,30 @@ import voruti.priorit.PrioritManager;
 public class App {
 
 	private Frame frame;
+	private ItemDetail itemDetail;
 	private PrioritManager manager;
 
+	/**
+	 * {@link #openItem(int)}
+	 */
+	private int lastIndex;
+
 	public App() {
+		this.lastIndex = -1;
+
 		try {
 			EventQueue.invokeAndWait(() -> {
 				frame = new Frame(this);
 				frame.setVisible(true);
+			});
+		} catch (InterruptedException | InvocationTargetException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		try {
+			EventQueue.invokeAndWait(() -> {
+				itemDetail = new ItemDetail(this);
 			});
 		} catch (InterruptedException | InvocationTargetException e) {
 			e.printStackTrace();
@@ -39,9 +56,17 @@ public class App {
 		frame.putItemsInList(manager.getItems());
 	}
 
-	public boolean openItem(int index) {
-		System.out.println(index);
-		return false;
+	public void openItem(int index) {
+		if (lastIndex != index) {
+			System.out.println(index);
+			lastIndex = index;
+
+			itemDetail.setItem(manager.getItems()
+					.get(index));
+			itemDetail.setVisible(true);
+		} else {
+			lastIndex = -1;
+		}
 	}
 
 	public static void main(String[] args) {
@@ -55,4 +80,5 @@ public class App {
 
 		new App();
 	}
+
 }

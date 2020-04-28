@@ -40,7 +40,7 @@ public class Frame extends JFrame {
 		itemList.setBackground(new Color(0x2F, 0x2F, 0x2F));
 		itemList.addListSelectionListener(event -> {
 			if (!event.getValueIsAdjusting()) { // TODO is triggered to often
-//				itemList.clearSelection();
+				itemList.clearSelection();
 				app.openItem(event.getFirstIndex());
 			}
 		});
