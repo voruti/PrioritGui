@@ -81,7 +81,7 @@ public class Frame extends JFrame {
 		LOGGER.entering(CLASS_NAME, METHOD_NAME, list);
 
 		Object[] items = list.stream()
-				.map(i -> String.format("%s (%s)", i.getTitle(), i.getuName()))
+				.map(i -> String.format("%s%.20s (%s)", i.isDone() ? "Done: " : "", i.getTitle(), i.getuName()))
 				.toArray();
 		itemList.setListData(Arrays.copyOf(items, items.length, String[].class));
 

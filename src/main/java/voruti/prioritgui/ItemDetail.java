@@ -95,6 +95,7 @@ public class ItemDetail extends JFrame {
 		inpTitle.setBackground(new Color(0x2F, 0x2F, 0x2F));
 		inpTitle.setFont(new Font("Arial", Font.PLAIN, 30));
 		inpTitle.setForeground(Color.WHITE);
+		inpTitle.setCaretColor(Color.WHITE);
 		panel.add(inpTitle, "4, 2");
 
 		JLabel lblText = new JLabel("Text:");
@@ -107,6 +108,7 @@ public class ItemDetail extends JFrame {
 		inpText.setBackground(new Color(0x2F, 0x2F, 0x2F));
 		inpText.setFont(new Font("Arial", Font.PLAIN, 30));
 		inpText.setForeground(Color.WHITE);
+		inpText.setCaretColor(Color.WHITE);
 		inpText.setLineWrap(true);
 		panel.add(inpText, "4, 4");
 
