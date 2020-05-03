@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,7 +54,8 @@ public class App {
 			System.exit(1);
 		}
 
-		frame.putItemsInList(manager.getItems());
+		LOGGER.log(Level.FINE, "Putting items from manager to gui view");
+		frame.putItemsInList(manager.getAllItems());
 
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
@@ -64,7 +66,7 @@ public class App {
 
 		frame.setVisible(false);
 
-		itemDetail.setItem(manager.getItems()
+		itemDetail.setItem(manager.getAllItems()
 				.get(index));
 
 		itemDetail.setVisible(true);
@@ -93,10 +95,12 @@ public class App {
 		final String METHOD_NAME = "closingItem";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME, item);
 
-		manager.updateItem(item);
+		if (!manager.updateItem(item))
+			LOGGER.log(Level.WARNING, "Error on updating item={0}", item);
 
-		frame.putItemsInList(manager.getItems());
+		frame.putItemsInList(manager.getAllItems());
 		frame.setVisible(true);
+		frame.resetSelectionTrigger();
 
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
@@ -109,13 +113,21 @@ public class App {
 		Logger.getGlobal()
 				.getParent()
 				.setLevel(Level.CONFIG);
-		Logger.getGlobal()
-				.getParent()
-				.getHandlers()[0].setLevel(Level.ALL);
+		iLog();
+		Frame.iLog();
+		ItemDetail.iLog();
+		Item.iLog();
+		PrioritManager.iLog();
 
 		new App();
 
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
+	}
+
+	public static void iLog() {
+		ConsoleHandler consoleHandler = new ConsoleHandler();
+		consoleHandler.setLevel(Level.ALL);
+		LOGGER.addHandler(consoleHandler);
 	}
 
 }

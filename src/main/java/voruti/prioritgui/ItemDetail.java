@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -188,6 +190,9 @@ public class ItemDetail extends JFrame {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
+				final String METHOD_NAME = "windowClosing";
+				LOGGER.entering(CLASS_NAME, METHOD_NAME, e);
+				
 				Item item = new Item();
 				item.setuName(getTitle().substring(0, getTitle().length() - TITLE_SUFFIX.length()));
 				item.setTitle(inpTitle.getText());
@@ -202,6 +207,8 @@ public class ItemDetail extends JFrame {
 				app.closingItem(item);
 
 				super.windowClosing(e);
+				
+				LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 			}
 		});
 
@@ -227,4 +234,9 @@ public class ItemDetail extends JFrame {
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
+	public static void iLog() {
+		ConsoleHandler consoleHandler=new ConsoleHandler();
+		consoleHandler.setLevel(Level.ALL);
+		LOGGER.addHandler(consoleHandler);
+	}
 }
