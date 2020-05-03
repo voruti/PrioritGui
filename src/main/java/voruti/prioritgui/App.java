@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import voruti.priorit.Item;
 import voruti.priorit.PrioritManager;
 
 /**
@@ -19,14 +20,7 @@ public class App {
 	private ItemDetail itemDetail;
 	private PrioritManager manager;
 
-	/**
-	 * {@link #openItem(int)}
-	 */
-	private int lastIndex;
-
 	public App() {
-		this.lastIndex = -1;
-
 		try {
 			EventQueue.invokeAndWait(() -> {
 				frame = new Frame(this);
@@ -57,16 +51,31 @@ public class App {
 	}
 
 	public void openItem(int index) {
-		if (lastIndex != index) {
-			System.out.println(index);
-			lastIndex = index;
+		frame.setVisible(false);
 
-			itemDetail.setItem(manager.getItems()
-					.get(index));
+		itemDetail.setItem(manager.getItems()
+				.get(index));
+
+		itemDetail.setVisible(true);
+	}
+
+	public void newItem() {
+		Item item = new Item();
+		if (manager.addItem(item)) {
+			itemDetail.setItem(item);
+
+			frame.setVisible(false);
 			itemDetail.setVisible(true);
 		} else {
-			lastIndex = -1;
+			System.err.println("Error!");
 		}
+	}
+
+	public void closingItem(Item item) {
+		manager.updateItem(item);
+
+		frame.putItemsInList(manager.getItems());
+		frame.setVisible(true);
 	}
 
 	public static void main(String[] args) {

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -23,7 +24,14 @@ public class Frame extends JFrame {
 
 	private JList<String> itemList;
 
+	/**
+	 * {@link App#openItem(int)}
+	 */
+	private int lastIndex;
+
 	public Frame(App app) {
+		this.lastIndex = -1;
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 800);
 		setLocationRelativeTo(null);
@@ -41,10 +49,28 @@ public class Frame extends JFrame {
 		itemList.addListSelectionListener(event -> {
 			if (!event.getValueIsAdjusting()) { // TODO is triggered to often
 				itemList.clearSelection();
-				app.openItem(event.getFirstIndex());
+
+				int index = event.getFirstIndex();
+				if (lastIndex != index) {
+					System.out.println(index);
+					lastIndex = index;
+
+					app.openItem(index);
+				} else {
+					lastIndex = -1;
+				}
 			}
 		});
 		panel.add(itemList, BorderLayout.CENTER);
+
+		JButton btnNew = new JButton("New item");
+		btnNew.setForeground(Color.WHITE);
+		btnNew.setFont(new Font("Arial", Font.PLAIN, 30));
+		btnNew.setBackground(new Color(0x2F, 0x2F, 0x2F));
+		btnNew.addActionListener(event -> {
+			app.newItem();
+		});
+		panel.add(btnNew, BorderLayout.SOUTH);
 	}
 
 	public void putItemsInList(List<Item> list) {

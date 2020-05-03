@@ -2,9 +2,12 @@ package voruti.prioritgui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -28,10 +31,13 @@ import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
 import voruti.priorit.Item;
+import voruti.priorit.Priority;
 
 public class ItemDetail extends JFrame {
 
 	private static final long serialVersionUID = -2266535806311908702L;
+
+	private static final String TITLE_SUFFIX = " - PrioritGui";
 
 	private JTextField inpTitle;
 	private JTextArea inpText;
@@ -170,10 +176,31 @@ public class ItemDetail extends JFrame {
 		inpDone = new JCheckBox();
 		inpDone.setBackground(new Color(0x2F, 0x2F, 0x2F));
 		panel.add(inpDone, "4, 12");
+
+		addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Item item = new Item();
+				item.setuName(getTitle().substring(0, getTitle().length() - TITLE_SUFFIX.length()));
+				item.setTitle(inpTitle.getText());
+				item.setText(inpText.getText());
+				List<String> categories = inpCategories.getSelectedValuesList();
+				if (!categories.isEmpty())
+					item.setCategories(categories);
+				item.setPriority(Priority.valueOf(inpPriority.getSelectedValue()));
+				item.setEtaDate(inpEstDateModel.getValue());
+				item.setDone(inpDone.isSelected());
+
+				app.closingItem(item);
+
+				super.windowClosing(e);
+			}
+		});
 	}
 
 	public void setItem(Item item) {
-		setTitle(item.getuName() + " - PrioritGui");
+		setTitle(item.getuName() + TITLE_SUFFIX);
 
 		inpTitle.setText(item.getTitle());
 		inpText.setText(item.getText());
