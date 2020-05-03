@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JFrame;
@@ -15,6 +16,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -31,6 +33,14 @@ public class ItemDetail extends JFrame {
 
 	private static final long serialVersionUID = -2266535806311908702L;
 
+	private JTextField inpTitle;
+	private JTextArea inpText;
+	private JList<String> inpCategories;
+	private JList<String> inpPriority;
+	private UtilDateModel inpEstDateModel;
+	private JDatePickerImpl inpEstDate;
+	private JCheckBox inpDone;
+
 	public ItemDetail(App app) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 650);
@@ -44,7 +54,8 @@ public class ItemDetail extends JFrame {
 						FormSpecs.RELATED_GAP_COLSPEC,
 						FormSpecs.DEFAULT_COLSPEC,
 						FormSpecs.RELATED_GAP_COLSPEC,
-						FormSpecs.DEFAULT_COLSPEC, },
+						ColumnSpec.decode("default:grow"),
+						FormSpecs.RELATED_GAP_COLSPEC, },
 				new RowSpec[] {
 						FormSpecs.RELATED_GAP_ROWSPEC,
 						FormSpecs.DEFAULT_ROWSPEC,
@@ -65,7 +76,10 @@ public class ItemDetail extends JFrame {
 		lblTitle.setForeground(Color.WHITE);
 		panel.add(lblTitle, "2, 2");
 
-		JTextField inpTitle = new JTextField();
+		inpTitle = new JTextField();
+		inpTitle.setBackground(new Color(0x2F, 0x2F, 0x2F));
+		inpTitle.setFont(new Font("Arial", Font.PLAIN, 30));
+		inpTitle.setForeground(Color.WHITE);
 		panel.add(inpTitle, "4, 2");
 
 		JLabel lblText = new JLabel("Text:");
@@ -73,7 +87,12 @@ public class ItemDetail extends JFrame {
 		lblText.setForeground(Color.WHITE);
 		panel.add(lblText, "2, 4");
 
-		JTextArea inpText = new JTextArea();
+		inpText = new JTextArea();
+		inpText.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+		inpText.setBackground(new Color(0x2F, 0x2F, 0x2F));
+		inpText.setFont(new Font("Arial", Font.PLAIN, 30));
+		inpText.setForeground(Color.WHITE);
+		inpText.setLineWrap(true);
 		panel.add(inpText, "4, 4");
 
 		JLabel lblCategories = new JLabel("Categories:");
@@ -81,7 +100,11 @@ public class ItemDetail extends JFrame {
 		lblCategories.setForeground(Color.WHITE);
 		panel.add(lblCategories, "2, 6");
 
-		JList<String> inpCategories = new JList<>();
+		inpCategories = new JList<>();
+		inpCategories.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		inpCategories.setForeground(Color.WHITE);
+		inpCategories.setFont(new Font("Arial", Font.PLAIN, 30));
+		inpCategories.setBackground(new Color(0x2F, 0x2F, 0x2F));
 		panel.add(inpCategories, "4, 6");
 
 		JLabel lblPriority = new JLabel("Priority:");
@@ -89,7 +112,12 @@ public class ItemDetail extends JFrame {
 		lblPriority.setForeground(Color.WHITE);
 		panel.add(lblPriority, "2, 8");
 
-		JList<String> inpPriority = new JList<>();
+		inpPriority = new JList<>();
+		inpPriority.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		inpPriority.setForeground(Color.WHITE);
+		inpPriority.setFont(new Font("Arial", Font.PLAIN, 30));
+		inpPriority.setBackground(new Color(0x2F, 0x2F, 0x2F));
+		inpPriority.setListData(new String[] { "VERY_LOW", "LOW", "MED", "HIGH", "VERY_HIGH" });
 		panel.add(inpPriority, "4, 8");
 
 		JLabel lblEstDate = new JLabel("est. Date:");
@@ -97,12 +125,12 @@ public class ItemDetail extends JFrame {
 		lblEstDate.setForeground(Color.WHITE);
 		panel.add(lblEstDate, "2, 10");
 
-		UtilDateModel model = new UtilDateModel();
+		inpEstDateModel = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
-		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+		JDatePanelImpl datePanel = new JDatePanelImpl(inpEstDateModel, p);
 		AbstractFormatter abstractFormatter = new AbstractFormatter() {
 
 			private static final long serialVersionUID = 2786958155282406860L;
@@ -125,7 +153,13 @@ public class ItemDetail extends JFrame {
 				return "";
 			}
 		};
-		JDatePickerImpl inpEstDate = new JDatePickerImpl(datePanel, abstractFormatter);
+		inpEstDate = new JDatePickerImpl(datePanel, abstractFormatter);
+		inpEstDate.getJFormattedTextField()
+				.setBackground(new Color(0x2F, 0x2F, 0x2F));
+		inpEstDate.getJFormattedTextField()
+				.setFont(new Font("Arial", Font.PLAIN, 30));
+		inpEstDate.getJFormattedTextField()
+				.setForeground(Color.WHITE);
 		panel.add(inpEstDate, "4, 10");
 
 		JLabel lblDone = new JLabel("Done:");
@@ -133,13 +167,23 @@ public class ItemDetail extends JFrame {
 		lblDone.setForeground(Color.WHITE);
 		panel.add(lblDone, "2, 12");
 
-		JCheckBox inpDone = new JCheckBox();
+		inpDone = new JCheckBox();
+		inpDone.setBackground(new Color(0x2F, 0x2F, 0x2F));
 		panel.add(inpDone, "4, 12");
 	}
 
 	public void setItem(Item item) {
 		setTitle(item.getuName() + " - PrioritGui");
 
+		inpTitle.setText(item.getTitle());
+		inpText.setText(item.getText());
+		String[] categories = item.getCategories()
+				.toArray(new String[] {});
+		inpCategories.setListData(categories);
+		inpPriority.setSelectedValue(item.getPriority()
+				.toString(), true);
+		inpEstDateModel.setValue(item.getEtaDate());
+		inpDone.setSelected(item.isDone());
 	}
 
 }
