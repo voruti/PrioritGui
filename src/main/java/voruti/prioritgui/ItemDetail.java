@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -37,6 +38,9 @@ public class ItemDetail extends JFrame {
 
 	private static final long serialVersionUID = -2266535806311908702L;
 
+	private static final String CLASS_NAME = ItemDetail.class.getName();
+	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
+
 	private static final String TITLE_SUFFIX = " - PrioritGui";
 
 	private JTextField inpTitle;
@@ -48,6 +52,9 @@ public class ItemDetail extends JFrame {
 	private JCheckBox inpDone;
 
 	public ItemDetail(App app) {
+		final String METHOD_NAME = "<init>";
+		LOGGER.entering(CLASS_NAME, METHOD_NAME, app);
+
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 650);
 		setLocationRelativeTo(null);
@@ -197,9 +204,14 @@ public class ItemDetail extends JFrame {
 				super.windowClosing(e);
 			}
 		});
+
+		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
 	public void setItem(Item item) {
+		final String METHOD_NAME = "setItem";
+		LOGGER.entering(CLASS_NAME, METHOD_NAME, item);
+
 		setTitle(item.getuName() + TITLE_SUFFIX);
 
 		inpTitle.setText(item.getTitle());
@@ -211,6 +223,8 @@ public class ItemDetail extends JFrame {
 				.toString(), true);
 		inpEstDateModel.setValue(item.getEtaDate());
 		inpDone.setSelected(item.isDone());
+
+		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
 }

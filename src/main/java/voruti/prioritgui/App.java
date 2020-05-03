@@ -16,11 +16,17 @@ import voruti.priorit.PrioritManager;
  */
 public class App {
 
+	private static final String CLASS_NAME = App.class.getName();
+	private static final Logger LOGGER = Logger.getLogger(CLASS_NAME);
+
 	private Frame frame;
 	private ItemDetail itemDetail;
 	private PrioritManager manager;
 
 	public App() {
+		final String METHOD_NAME = "<init>";
+		LOGGER.entering(CLASS_NAME, METHOD_NAME);
+
 		try {
 			EventQueue.invokeAndWait(() -> {
 				frame = new Frame(this);
@@ -48,18 +54,28 @@ public class App {
 		}
 
 		frame.putItemsInList(manager.getItems());
+
+		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
 	public void openItem(int index) {
+		final String METHOD_NAME = "openItem";
+		LOGGER.entering(CLASS_NAME, METHOD_NAME, index);
+
 		frame.setVisible(false);
 
 		itemDetail.setItem(manager.getItems()
 				.get(index));
 
 		itemDetail.setVisible(true);
+
+		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
 	public void newItem() {
+		final String METHOD_NAME = "newItem";
+		LOGGER.entering(CLASS_NAME, METHOD_NAME);
+
 		Item item = new Item();
 		if (manager.addItem(item)) {
 			itemDetail.setItem(item);
@@ -69,16 +85,26 @@ public class App {
 		} else {
 			System.err.println("Error!");
 		}
+
+		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
 	public void closingItem(Item item) {
+		final String METHOD_NAME = "closingItem";
+		LOGGER.entering(CLASS_NAME, METHOD_NAME, item);
+
 		manager.updateItem(item);
 
 		frame.putItemsInList(manager.getItems());
 		frame.setVisible(true);
+
+		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
 	public static void main(String[] args) {
+		final String METHOD_NAME = "main";
+		LOGGER.entering(CLASS_NAME, METHOD_NAME, args);
+
 		System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF_%1$tT][%2$-50.50s][%4$13.13s]: %5$s%n");
 		Logger.getGlobal()
 				.getParent()
@@ -88,6 +114,8 @@ public class App {
 				.getHandlers()[0].setLevel(Level.ALL);
 
 		new App();
+
+		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
 }
