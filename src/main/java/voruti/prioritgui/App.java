@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,8 +11,9 @@ import voruti.priorit.Item;
 import voruti.priorit.PrioritManager;
 
 /**
+ * Program logic for this application.
+ * 
  * @author voruti
- *
  */
 public class App {
 
@@ -24,6 +24,9 @@ public class App {
 	private ItemDetail itemDetail;
 	private PrioritManager manager;
 
+	/**
+	 * Initializes the necessary {@link PrioritManager} and frames.
+	 */
 	public App() {
 		final String METHOD_NAME = "<init>";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME);
@@ -60,6 +63,11 @@ public class App {
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
+	/**
+	 * Shows {@link Item} with {@code index} in {@link #itemDetail}.
+	 * 
+	 * @param index the {@link Item} position
+	 */
 	public void openItem(int index) {
 		final String METHOD_NAME = "openItem";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME, index);
@@ -74,6 +82,10 @@ public class App {
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
+	/**
+	 * Creates a new {@link Item} with default values and shows it in
+	 * {@link #itemDetail}.
+	 */
 	public void newItem() {
 		final String METHOD_NAME = "newItem";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME);
@@ -91,6 +103,11 @@ public class App {
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
+	/**
+	 * Updates {@link Item item} and shows {@link #frame} again.
+	 * 
+	 * @param item the {@link Item} to update
+	 */
 	public void closingItem(Item item) {
 		final String METHOD_NAME = "closingItem";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME, item);
@@ -109,25 +126,8 @@ public class App {
 		final String METHOD_NAME = "main";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME, args);
 
-		System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF_%1$tT][%2$-50.50s][%4$13.13s]: %5$s%n");
-		Logger.getGlobal()
-				.getParent()
-				.setLevel(Level.CONFIG);
-		iLog();
-		Frame.iLog();
-		ItemDetail.iLog();
-		Item.iLog();
-		PrioritManager.iLog();
-
 		new App();
 
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
-
-	public static void iLog() {
-		ConsoleHandler consoleHandler = new ConsoleHandler();
-		consoleHandler.setLevel(Level.ALL);
-		LOGGER.addHandler(consoleHandler);
-	}
-
 }

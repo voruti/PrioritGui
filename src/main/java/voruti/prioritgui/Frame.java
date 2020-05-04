@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -18,8 +16,9 @@ import javax.swing.ListSelectionModel;
 import voruti.priorit.Item;
 
 /**
+ * The "main frame".
+ * 
  * @author voruti
- *
  */
 public class Frame extends JFrame {
 
@@ -32,6 +31,11 @@ public class Frame extends JFrame {
 
 	private boolean itemSelectionTriggered;
 
+	/**
+	 * Initializes the/this frame.
+	 * 
+	 * @param app the {@link App} to notify when opening an {@link Item}
+	 */
 	public Frame(App app) {
 		final String METHOD_NAME = "<init>";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME, app);
@@ -76,6 +80,12 @@ public class Frame extends JFrame {
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
+	/**
+	 * Loads all {@link Item items} from {@link List list} into the {@link JList} in
+	 * this frame.
+	 * 
+	 * @param list the {@link Item} {@link List} to load
+	 */
 	public void putItemsInList(List<Item> list) {
 		final String METHOD_NAME = "putItemsInList";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME, list);
@@ -88,13 +98,16 @@ public class Frame extends JFrame {
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
+	/**
+	 * Resets {@link #itemSelectionTriggered}, so another {@link JList} entry can be
+	 * selected.
+	 */
 	public void resetSelectionTrigger() {
-		itemSelectionTriggered = false;
-	}
+		final String METHOD_NAME = "resetSelectionTrigger";
+		LOGGER.entering(CLASS_NAME, METHOD_NAME);
 
-	public static void iLog() {
-		ConsoleHandler consoleHandler = new ConsoleHandler();
-		consoleHandler.setLevel(Level.ALL);
-		LOGGER.addHandler(consoleHandler);
+		itemSelectionTriggered = false;
+
+		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 }

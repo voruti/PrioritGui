@@ -9,8 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
@@ -36,6 +34,12 @@ import com.jgoodies.forms.layout.RowSpec;
 import voruti.priorit.Item;
 import voruti.priorit.Priority;
 
+/**
+ * A frame to show detailed {@link Item} information. Also allows editing of
+ * these information.
+ * 
+ * @author voruti
+ */
 public class ItemDetail extends JFrame {
 
 	private static final long serialVersionUID = -2266535806311908702L;
@@ -53,6 +57,11 @@ public class ItemDetail extends JFrame {
 	private JDatePickerImpl inpEstDate;
 	private JCheckBox inpDone;
 
+	/**
+	 * Initializes the/this frame.
+	 * 
+	 * @param app the {@link App} to notify when closing this frame
+	 */
 	public ItemDetail(App app) {
 		final String METHOD_NAME = "<init>";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME, app);
@@ -194,7 +203,7 @@ public class ItemDetail extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				final String METHOD_NAME = "windowClosing";
 				LOGGER.entering(CLASS_NAME, METHOD_NAME, e);
-				
+
 				Item item = new Item();
 				item.setuName(getTitle().substring(0, getTitle().length() - TITLE_SUFFIX.length()));
 				item.setTitle(inpTitle.getText());
@@ -209,7 +218,7 @@ public class ItemDetail extends JFrame {
 				app.closingItem(item);
 
 				super.windowClosing(e);
-				
+
 				LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 			}
 		});
@@ -217,6 +226,11 @@ public class ItemDetail extends JFrame {
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
 	}
 
+	/**
+	 * Loads all information from {@link Item item} into this frame.
+	 * 
+	 * @param item the {@link Item} to load
+	 */
 	public void setItem(Item item) {
 		final String METHOD_NAME = "setItem";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME, item);
@@ -234,11 +248,5 @@ public class ItemDetail extends JFrame {
 		inpDone.setSelected(item.isDone());
 
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
-	}
-
-	public static void iLog() {
-		ConsoleHandler consoleHandler=new ConsoleHandler();
-		consoleHandler.setLevel(Level.ALL);
-		LOGGER.addHandler(consoleHandler);
 	}
 }
