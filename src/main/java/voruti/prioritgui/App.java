@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -120,6 +121,21 @@ public class App {
 		frame.resetSelectionTrigger();
 
 		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
+	}
+
+	/**
+	 * Redirects {@link PrioritManager#getAllCategories()}.
+	 * 
+	 * @return the redirected {@link List}
+	 */
+	public List<String> getAllCategories() {
+		final String METHOD_NAME = "getFileToItem";
+		LOGGER.entering(CLASS_NAME, METHOD_NAME);
+
+		List<String> categories = manager.getAllCategories();
+
+		LOGGER.exiting(CLASS_NAME, METHOD_NAME, categories);
+		return categories;
 	}
 
 	public static void main(String[] args) {

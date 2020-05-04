@@ -49,6 +49,8 @@ public class ItemDetail extends JFrame {
 
 	private static final String TITLE_SUFFIX = " - PrioritGui";
 
+	private final App app;
+
 	private JTextField inpTitle;
 	private JTextArea inpText;
 	private JList<String> inpCategories;
@@ -60,11 +62,14 @@ public class ItemDetail extends JFrame {
 	/**
 	 * Initializes the/this frame.
 	 * 
-	 * @param app the {@link App} to notify when closing this frame
+	 * @param app the {@link App} to notify when closing this frame; also enables
+	 *            the frame to access data from {@link App}
 	 */
 	public ItemDetail(App app) {
 		final String METHOD_NAME = "<init>";
 		LOGGER.entering(CLASS_NAME, METHOD_NAME, app);
+
+		this.app = app;
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 650);
@@ -239,9 +244,11 @@ public class ItemDetail extends JFrame {
 
 		inpTitle.setText(item.getTitle());
 		inpText.setText(item.getText());
-		String[] categories = item.getCategories()
-				.toArray(new String[] {});
+		List<String> categoriesList = app.getAllCategories();
+		String[] categories = categoriesList.toArray(new String[] {});
 		inpCategories.setListData(categories);
+		for (String category : item.getCategories())
+			inpCategories.addSelectionInterval(categoriesList.indexOf(category), categoriesList.indexOf(category));
 		inpPriority.setSelectedValue(item.getPriority()
 				.toString(), true);
 		inpEstDateModel.setValue(item.getEtaDate());
