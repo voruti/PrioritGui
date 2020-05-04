@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -54,7 +55,7 @@ public class ItemDetail extends JFrame {
 	private JTextField inpTitle;
 	private JTextArea inpText;
 	private JList<String> inpCategories;
-	private JList<String> inpPriority;
+	private JComboBox<String> inpPriority;
 	private UtilDateModel inpEstDateModel;
 	private JDatePickerImpl inpEstDate;
 	private JCheckBox inpDone;
@@ -143,12 +144,10 @@ public class ItemDetail extends JFrame {
 		lblPriority.setForeground(Color.WHITE);
 		panel.add(lblPriority, "2, 8");
 
-		inpPriority = new JList<>();
-		inpPriority.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		inpPriority = new JComboBox<>(new String[] { "VERY_LOW", "LOW", "MED", "HIGH", "VERY_HIGH" });
 		inpPriority.setForeground(Color.WHITE);
 		inpPriority.setFont(new Font("Arial", Font.PLAIN, 30));
 		inpPriority.setBackground(new Color(0x2F, 0x2F, 0x2F));
-		inpPriority.setListData(new String[] { "VERY_LOW", "LOW", "MED", "HIGH", "VERY_HIGH" });
 		panel.add(inpPriority, "4, 8");
 
 		JLabel lblEstDate = new JLabel("est. Date:");
@@ -216,7 +215,7 @@ public class ItemDetail extends JFrame {
 				List<String> categories = inpCategories.getSelectedValuesList();
 				if (!categories.isEmpty())
 					item.setCategories(categories);
-				item.setPriority(Priority.valueOf(inpPriority.getSelectedValue()));
+				item.setPriority(Priority.valueOf((String) inpPriority.getSelectedItem()));
 				item.setEtaDate(inpEstDateModel.getValue());
 				item.setDone(inpDone.isSelected());
 
@@ -249,8 +248,8 @@ public class ItemDetail extends JFrame {
 		inpCategories.setListData(categories);
 		for (String category : item.getCategories())
 			inpCategories.addSelectionInterval(categoriesList.indexOf(category), categoriesList.indexOf(category));
-		inpPriority.setSelectedValue(item.getPriority()
-				.toString(), true);
+		inpPriority.setSelectedItem(item.getPriority()
+				.toString());
 		inpEstDateModel.setValue(item.getEtaDate());
 		inpDone.setSelected(item.isDone());
 
