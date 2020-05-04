@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JList;
+
 import voruti.priorit.Item;
 import voruti.priorit.PrioritManager;
 
@@ -57,6 +59,18 @@ public class App {
 			e.printStackTrace();
 			System.exit(1);
 		}
+
+		reloadList();
+
+		LOGGER.exiting(CLASS_NAME, METHOD_NAME);
+	}
+
+	/**
+	 * Reloads the {@link Item items} in the {@link JList} of {@link #frame}.
+	 */
+	public void reloadList() {
+		final String METHOD_NAME = "reloadList";
+		LOGGER.entering(CLASS_NAME, METHOD_NAME);
 
 		LOGGER.log(Level.FINE, "Putting items from manager to gui view");
 		frame.putItemsInList(manager.getAllItems());
@@ -116,7 +130,7 @@ public class App {
 		if (!manager.updateItem(item))
 			LOGGER.log(Level.WARNING, "Error on updating item={0}", item);
 
-		frame.putItemsInList(manager.getAllItems());
+		reloadList();
 		frame.setVisible(true);
 		frame.resetSelectionTrigger();
 
